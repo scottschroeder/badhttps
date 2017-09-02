@@ -1,0 +1,8 @@
+[package]
+name = "badhttps"
+version = "0.1.0"
+authors = ["Scott Schroeder <scottschroeder@sent.com>"]
+
+[dependencies]
+native-tls = { path = "../rust-native-tls" }
+openssl = "0.9.17"
