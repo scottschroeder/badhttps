@@ -1,9 +1,9 @@
 extern crate native_tls;
+extern crate reqwest;
 use native_tls::TlsConnector;
 use std::io::{Read, Write};
 use std::net::TcpStream;
 
-use native_tls::backend::openssl::TlsConnectorBuilderExt;
 fn connect_google() {
     let connector = TlsConnector::builder().unwrap().build().unwrap();
 
@@ -32,6 +32,28 @@ fn router() {
     println!("{}", String::from_utf8_lossy(&res));
 }
 
+fn reqwest_get(url: &str, insecure: bool) {
+    let mut body_data = vec![];
+    let mut body: String = String::new();
+
+    println!("Start reqwest");
+    let mut clientbuilder = reqwest::ClientBuilder::new().unwrap();
+
+    if insecure {
+        clientbuilder.danger_disable_certificate_validation_entirely();
+    }
+    let client = clientbuilder.build().unwrap();
+
+    println!("Have client");
+    let mut res = client.get(url).unwrap().send().unwrap();
+    println!("Have response");
+    let _ = res.read_to_end(&mut body_data).unwrap();
+    let body = String::from_utf8_lossy(&body_data);
+    println!("{}", body);
+}
+
 fn main() {
-    router();
+    reqwest_get("https://icanhazip.com", false);
+    reqwest_get("https://google.com", false);
+    reqwest_get("https://10.0.0.1", true);
 }
