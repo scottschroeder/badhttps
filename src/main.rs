@@ -54,6 +54,10 @@ fn reqwest_get(url: &str, insecure: bool) {
 
 fn main() {
     reqwest_get("https://icanhazip.com", false);
-    reqwest_get("https://google.com", false);
-    reqwest_get("https://10.0.0.1", true);
+    reqwest_get("https://expired.badssl.com/", true);
+    reqwest_get("https://wrong.host.badssl.com/", true);
+    reqwest_get("https://self-signed.badssl.com/", true);
+    reqwest_get("https://untrusted-root.badssl.com/", true);
+    reqwest_get("https://revoked.badssl.com/", true);
+    reqwest_get("https://pinning-test.badssl.com/", true);
 }
